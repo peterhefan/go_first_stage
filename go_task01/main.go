@@ -2,19 +2,53 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 )
 
 func main() {
-	array := []int{4, 1, 2, 1, 2}
-	fmt.Println(singleNumber_1(array))
-	fmt.Println(singleNumber_2(array))
-	fmt.Println("-------------------------")
-	fmt.Println(isPalindrome(12321))
-	fmt.Println(isPalindrome2(12321))
-	fmt.Println("-------------------------")
-	fmt.Println(isValid("()[]{}"))
-	fmt.Println(isValid("([{}])"))
+	// array := []int{4, 1, 2, 3, 1, 2}
+
+	// fmt.Println(singleNumMatch(array))
+	// fmt.Println(singleNumber_1(array))
+	// fmt.Println(singleNumber_2(array))
+	// fmt.Println("-------------------------")
+	// fmt.Println(isPalindrome(12321))
+	// fmt.Println(isPalindrome2(12321))
+	// fmt.Println("-------------------------")
+	// fmt.Println(isValid("()[]{}"))
+	// fmt.Println(isValid("([{}])"))
+
+	fmt.Println(isValid2("()[]{}"))
+	// fmt.Println(isValid2("([{}])"))
+}
+
+func isValid2(str string) bool {
+
+	maps := map[rune]rune{
+		'}': '{',
+		']': '[',
+		')': '(',
+	}
+
+	stack := []rune{}
+	for _, char := range str {
+		if char == '{' || char == '[' || char == '(' {
+			stack = append(stack, char)
+		} else {
+			if len(stack) == 0 {
+				return false
+			}
+			fmt.Println(string(char), "maps[char]:", string(maps[char]), "stack[len(stack)-1]:", len(stack)-1, stack[len(stack)-1])
+			if maps[char] != stack[len(stack)-1] {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+	}
+	fmt.Println("stack:", stack, "")
+
+	return len(stack) == 0
 }
 
 func isValid(s string) bool {
@@ -77,6 +111,37 @@ func isPalindrome2(x int) bool {
 	}
 
 	return true
+}
+
+func singleNumMatch(arr []int) []int {
+
+	maps := map[int]int{}
+	// maps := make(map[int]int)
+	for _, v := range arr {
+		// fmt.Println(index)
+		if maps[v] != 0 {
+			maps[v]++
+		} else {
+			maps[v] = 1
+		}
+	}
+
+	result := []int{}
+	for k, v := range maps {
+		// fmt.Println(a)
+		if v == 1 {
+			// fmt.Print(k, ",")
+			result = append(result, k)
+		}
+	}
+
+	// 升序
+	sort.Ints(result)
+
+	// 降序
+	sort.Sort(sort.Reverse(sort.IntSlice(result)))
+	return result
+
 }
 
 func singleNumber_1(array []int) []int {
