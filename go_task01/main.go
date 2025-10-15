@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -14,15 +15,73 @@ func main() {
 	// fmt.Println(singleNumber_2(array))
 	// fmt.Println("-------------------------")
 	// fmt.Println(isPalindrome(12321))
-	// fmt.Println(isPalindrome2(12321))
+	// fmt.Println((12321))
 	// fmt.Println("-------------------------")
 	// fmt.Println(isValid("()[]{}"))
 	// fmt.Println(isValid("([{}])"))
 
-	fmt.Println(isValid2("()[]{}"))
+	// fmt.Println(isValid2("()[]{}"))
+	// fmt.Println(isValid2("[]{()}"))
 	// fmt.Println(isValid2("([{}])"))
+
+	strs := []string{"flower", "flow", "flight"}
+	fmt.Println(longCommonPrefix(strs))
+	strs2 := []string{"dog", "racecar", "car"}
+	fmt.Println(longCommonPrefix(strs2))
+
+	testCases := [][]int{
+        {1, 2, 3},
+        {4, 3, 2, 1},
+        {9},
+        {9, 9, 9},
+        {0},
+    }
+    for _, tc := range testCases {
+        fmt.Printf("输入: %v\n", tc)
+        fmt.Printf("输出: %v\n\n", plusOne(tc))
+    }
 }
 
+
+// 基本值类型
+// 加一 
+// 给定一个表示 大整数 的整数数组 digits，其中 digits[i] 是整数的第 i 位数字。这些数字按从左到右，从最高位到最低位排列。
+// 这个大整数不包含任何前导 0。
+// 将大整数加 1，并返回结果的数字数组。
+func plusOne(digits []int) []int {
+
+	n := len(digits)
+	for i := n-1 ; i >=0; i-- {
+		if digits[i] < 9 {
+			digits[i]++
+			return digits
+		}
+		digits[i] = 0
+	}
+	return append([]int{1},digits...)
+}
+
+
+// 最长公共前缀
+func longCommonPrefix(strs []string) string {
+	if len(strs) == 0 {
+		return ""
+	}
+
+	prefix := strs[0]
+	for i := 1; i < len(strs); i++ {
+		for !strings.HasPrefix(strs[i], prefix) {
+			prefix = prefix[0 : len(prefix)-1]
+			if len(prefix) == 0 {
+				return ""
+			}
+		}
+	}
+	return prefix
+
+}
+
+// 有效的括号
 func isValid2(str string) bool {
 
 	maps := map[rune]rune{
@@ -39,7 +98,6 @@ func isValid2(str string) bool {
 			if len(stack) == 0 {
 				return false
 			}
-			fmt.Println(string(char), "maps[char]:", string(maps[char]), "stack[len(stack)-1]:", len(stack)-1, stack[len(stack)-1])
 			if maps[char] != stack[len(stack)-1] {
 				return false
 			}
@@ -51,6 +109,7 @@ func isValid2(str string) bool {
 	return len(stack) == 0
 }
 
+// 有效的括号
 func isValid(s string) bool {
 	// 括号匹配
 	stack := []rune{}
@@ -98,6 +157,9 @@ func isPalindrome(x int) bool {
 	return true
 }
 
+/**
+ * 回文判断一个整数是否是回文数
+ */
 func isPalindrome2(x int) bool {
 	if x < 0 || (x%10 == 0 && x != 0) {
 		return false
@@ -113,6 +175,7 @@ func isPalindrome2(x int) bool {
 	return true
 }
 
+// 只出现一次的数字
 func singleNumMatch(arr []int) []int {
 
 	maps := map[int]int{}
@@ -144,6 +207,7 @@ func singleNumMatch(arr []int) []int {
 
 }
 
+// 只出现一次的数字
 func singleNumber_1(array []int) []int {
 	// 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。
 	// 找出那个只出现了一次的元素。
@@ -162,6 +226,7 @@ func singleNumber_1(array []int) []int {
 	return oneArr
 }
 
+// 只出现一次的数字
 func singleNumber_2(array []int) int {
 	result := 0
 	for _, num := range array {
