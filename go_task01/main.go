@@ -40,6 +40,35 @@ func main() {
         fmt.Printf("输入: %v\n", tc)
         fmt.Printf("输出: %v\n\n", plusOne(tc))
     }
+
+
+	testCases = [][]int{
+        {1,1,2},
+        {0,0,1,1,1,2,2,3,3,4},
+        {1,2,3},
+        {},
+    }
+    
+    for _, nums := range testCases {
+        fmt.Printf("原数组: %v\n", nums)
+        length := removeDuplicates(nums)
+        fmt.Printf("新长度: %d, 处理后数组: %v\n\n", length, nums[:length])
+    }
+}
+
+func removeDuplicates(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	slow := 0
+	for fast := 1; fast < len(nums); fast++ {
+		if nums[fast] != nums[slow] {
+			slow++
+			nums[slow] = nums[fast]
+		}
+	}
+	return slow + 1
+
 }
 
 
